@@ -66,7 +66,7 @@ export default defineConfig({
           tag: "script",
           attrs: {
             type: "module",
-            src: "/src/client/index.js",
+            src: "/static/js/index.js",
           },
         },
       ],
