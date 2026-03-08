@@ -5,10 +5,8 @@ import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 import { defineConfig } from "astro/config";
 import rehypeGraphviz from "rehype-graphviz";
 import rehypeMathjax from "rehype-mathjax";
-import rehypeRaw from "rehype-raw";
 import remarkMath from "remark-math";
 
-import rehypeDetailsWrapper from "./src/plugins/rehype-details-wrapper";
 import rehypeValidateLinks from "./src/plugins/rehype-validate-links";
 import starlightIndexOnlySidebar from "./src/plugins/starlight-index-only-sidebar";
 
@@ -19,10 +17,8 @@ export default defineConfig({
       remarkMath, // adds support for math
     ],
     rehypePlugins: [
-      rehypeRaw, // allow preprocessing HTML as AST nodes
       rehypeMathjax, // co-dependent with remark-math
       rehypeGraphviz, // Graphviz diagram support
-      rehypeDetailsWrapper, // goes last; depends on rehypeRaw
       rehypeValidateLinks, // validate links and convert to absolute paths
     ],
   },
