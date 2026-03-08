@@ -9,12 +9,24 @@ html {
 }
 
 starlight-toc {
-  a[aria-current="true"] {
+  a {
+    transition: transform 0.2s ease;
+    transform-origin: left;
+
     span {
-      border-left: 3px solid var(--sl-color-text-accent);
+      border-left: 3px solid transparent;
       border-radius: 2px;
       padding-left: 0.5rem;
       margin-left: -0.5rem;
+      transition: border-color 0.2s ease;
+    }
+  }
+
+  a[aria-current="true"] {
+    transform: scale(1.04);
+
+    span {
+      border-left-color: var(--sl-color-text-accent);
     }
   }
 }
