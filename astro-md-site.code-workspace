@@ -1,0 +1,42 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "name": "astro-md-site",
+    },
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/node_modules": true,
+      "eslint*": true,
+      "tsconfig*": true,
+      "package-lock.json": true,
+      "*prettier*": true,
+    },
+    "[markdown]": {
+      "editor.unicodeHighlight.ambiguousCharacters": false,
+      "editor.unicodeHighlight.invisibleCharacters": false,
+      "diffEditor.ignoreTrimWhitespace": false,
+      "editor.wordWrap": "on",
+      "editor.quickSuggestions": {
+        "comments": "off",
+        "strings": "off",
+        "other": "off",
+      },
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+    "[mdx]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+  },
+  "extensions": {
+    "recommendations": [
+      "astro-build.astro-vscode",
+      "unifiedjs.vscode-mdx",
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+    ],
+  },
+}

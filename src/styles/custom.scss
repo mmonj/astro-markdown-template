@@ -1,0 +1,179 @@
+html {
+  scroll-behavior: smooth;
+}
+
+.sl-container:where(.astro-7nkwcw3z) {
+  max-width: 50rem;
+}
+
+/************ Details/Summary ************/
+details:not([class]) {
+  background: hsla(225.4, 16.5%, 48.8%, 0.11);
+  border-radius: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  display: block;
+}
+
+details[open]:not([class]) {
+  max-width: 100%;
+
+  > div.details-wrapper {
+    overflow-x: auto;
+    max-height: 75vh;
+    overflow-y: auto;
+    padding: 0.25rem;
+  }
+
+  p > img {
+    height: auto;
+    width: auto;
+  }
+}
+
+/********** MathJax/LaTeX Styling **********/
+mjx-container[jax="SVG"] {
+  display: inline-block;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  margin: 1em 0;
+}
+
+/********** TikZ SVG Styling **********/
+script[type="text/tikz"] {
+  display: block;
+}
+
+div > div[class="page"] > svg {
+  color-scheme: light dark;
+}
+
+html[data-theme="light"] div > div[class="page"] > svg {
+  stroke: currentColor;
+  fill: currentColor;
+}
+
+html:not([data-theme="light"]) div > div[class="page"] > svg {
+  stroke: white;
+  fill: white;
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/********** Mimic Bootstrap Class Utilities **********/
+.visually-hidden {
+  display: none !important;
+}
+
+.visibility-hidden {
+  visibility: hidden !important;
+}
+
+.visible {
+  display: block !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.d-block {
+  display: block !important;
+}
+
+.d-flex {
+  display: flex !important;
+}
+
+.flex-row {
+  flex-direction: row !important;
+}
+
+.flex-column {
+  flex-direction: column !important;
+}
+
+.justify-content-center {
+  justify-content: center !important;
+}
+
+.justify-content-between {
+  justify-content: space-between !important;
+}
+
+.justify-content-around {
+  justify-content: space-around !important;
+}
+
+.justify-content-evenly {
+  justify-content: space-evenly !important;
+}
+
+.align-items-center {
+  align-items: center !important;
+}
+
+.align-items-start {
+  align-items: flex-start !important;
+}
+
+.flex-wrap {
+  flex-wrap: wrap !important;
+}
+
+.flex-grow-1 {
+  flex-grow: 1 !important;
+}
+
+/* Overflow utilities */
+.overflow-auto {
+  overflow: auto !important;
+}
+
+.overflow-y-auto {
+  overflow-y: auto !important;
+}
+
+.overflow-x-hidden {
+  overflow-x: hidden !important;
+}
+
+/* Padding and Margin Utilities */
+/* Exposes utility classes like .p-0, .p-1, .pt-2, .mb-3, ..., .m-6, .gap-6 */
+
+$spacings: (
+  p: padding,
+  pt: padding-top,
+  pb: padding-bottom,
+  ps: padding-left,
+  pe: padding-right,
+  m: margin,
+  mt: margin-top,
+  mb: margin-bottom,
+  ms: margin-left,
+  me: margin-right,
+  gap: gap,
+  gap-row: row-gap,
+  gap-col: column-gap,
+);
+
+@each $class, $property in $spacings {
+  .#{$class}-0 {
+    #{$property}: 0 !important;
+  }
+
+  $scalar: 0.125;
+  $accumulated: 0;
+
+  @for $i from 1 through 6 {
+    $scalar: $scalar + ($i % 2) * $scalar;
+    $accumulated: $accumulated + $scalar;
+
+    .#{$class}-#{$i} {
+      #{$property}: #{$accumulated}rem !important;
+    }
+  }
+}
