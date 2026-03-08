@@ -118,7 +118,7 @@ You can nest Markdown syntax inside the `<details>` element. Details elements ar
 - `Code` works too
 - And you can use [links](https://example.com)
 
-## Mathematical Expressions
+**Mathematical Expressions**
 
 Details elements support mathematical notation. Inline expressions like $E = mc^2$ work seamlessly, and you can also use display mode for complex equations:
 
@@ -138,7 +138,7 @@ $$
 \int_{0}^{\infty} e^{-x^2} \, dx = \frac{\sqrt{\pi}}{2}
 $$
 
-## Code Examples
+**Code Examples**
 
 This section demonstrates how you can use HTML elements and utility classes within a details element to achieve granular control over layout and formatting:
 
