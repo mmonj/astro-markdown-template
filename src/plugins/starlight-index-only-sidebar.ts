@@ -2,6 +2,7 @@ import type { HookParameters } from "@astrojs/starlight/types";
 
 import { readFileSync, readdirSync, statSync } from "fs";
 import { join } from "path";
+import { parse as parseYaml } from "yaml";
 
 type TDirectoryConfig = {
   label: string;
@@ -22,17 +23,49 @@ type TIndexOnlySidebarPluginOptions = {
 
 const SITE_DOCS_ROOT = "./src/content/docs";
 
-function getTitleFromFrontmatter(mdFilePath: string): string | null {
+type TFrontmatterMetadata = {
+  title: string | null;
+  draft: boolean;
+  sidebarHidden: boolean;
+};
+
+function getFrontmatterMetadata(mdFilePath: string): TFrontmatterMetadata {
+  const defaultMetadata: TFrontmatterMetadata = {
+    title: null,
+    draft: false,
+    sidebarHidden: false,
+  };
+
   try {
     const content = readFileSync(mdFilePath, "utf-8");
     const match = content.match(/^---\n([\s\S]*?)\n---/);
-    if (!match) return null;
+    if (!match) return defaultMetadata;
 
-    const frontmatter = match[1];
-    const titleMatch = frontmatter.match(/title:\s*["']?([^"'\n]+)["']?/);
-    return titleMatch ? titleMatch[1] : null;
+    const frontmatterText = match[1];
+    const frontmatter = parseYaml(frontmatterText) as Record<string, unknown>;
+
+    if (!frontmatter || typeof frontmatter !== "object") {
+      return defaultMetadata;
+    }
+
+    const title = typeof frontmatter.title === "string" ? frontmatter.title : null;
+    const draft = frontmatter.draft === true;
+
+    // Handle sidebar.hidden - can be nested object
+    let sidebarHidden = false;
+    if (frontmatter.sidebar) {
+      if (typeof frontmatter.sidebar === "object" && frontmatter.sidebar !== null) {
+        sidebarHidden = (frontmatter.sidebar as Record<string, unknown>).hidden === true;
+      }
+    }
+
+    return {
+      title,
+      draft,
+      sidebarHidden,
+    };
   } catch {
-    return null;
+    return defaultMetadata;
   }
 }
 
@@ -59,6 +92,45 @@ function pathSegmentToLabel(pathSegment: string): string {
 }
 
 /**
+ * Process a root-level index.md and add to sidebar items if not draft/hidden
+ */
+function processRootIndex(
+  dir: string,
+  basePath: string,
+  dirDeterminesLabel: boolean,
+  items: Array<TSidebarItem>
+): void {
+  if (!basePath || basePath.includes("/")) {
+    return;
+  }
+
+  const indexPath = join(dir, "index.md");
+
+  try {
+    statSync(indexPath);
+  } catch {
+    // no index.md in this directory
+    return;
+  }
+
+  const metadata = getFrontmatterMetadata(indexPath);
+
+  if (metadata.draft || metadata.sidebarHidden) {
+    return;
+  }
+
+  if (dirDeterminesLabel) {
+    const lastSegment = basePath.split("/").pop() || basePath;
+    items.push({
+      label: pathSegmentToLabel(lastSegment),
+      slug: basePath,
+    });
+  } else {
+    items.push(basePath);
+  }
+}
+
+/**
  * Recursively scan directory for index.md files and build sidebar structure
  */
 function buildIndexSidebar(
@@ -70,24 +142,8 @@ function buildIndexSidebar(
   const items: Array<TSidebarItem> = [];
 
   try {
-    // Check if current dir has an index.md
-    if (basePath && !basePath.includes("/")) {
-      const indexPath = join(dir, "index.md");
-      try {
-        statSync(indexPath);
-        if (dirDeterminesLabel) {
-          const lastSegment = basePath.split("/").pop() || basePath;
-          items.push({
-            label: pathSegmentToLabel(lastSegment),
-            slug: basePath,
-          });
-        } else {
-          items.push(basePath);
-        }
-      } catch {
-        // No index.md in this directory
-      }
-    }
+    // process root-level index.md if applicable
+    processRootIndex(dir, basePath, dirDeterminesLabel, items);
 
     const entries = readdirSync(dir).sort();
 
@@ -105,6 +161,11 @@ function buildIndexSidebar(
           // Check if this directory has an index.md
           statSync(indexPath);
 
+          const metadata = getFrontmatterMetadata(indexPath);
+          if (metadata.draft || metadata.sidebarHidden) {
+            continue;
+          }
+
           // Recursively check for subdirectories with index.md
           const subItems = buildIndexSidebar(fullPath, slug, docsRoot, dirDeterminesLabel);
           if (subItems.length > 0) {
@@ -113,8 +174,8 @@ function buildIndexSidebar(
             if (dirDeterminesLabel) {
               groupLabel = pathSegmentToLabel(entry);
             } else {
-              const title = getTitleFromFrontmatter(indexPath);
-              groupLabel = title || entry;
+              const title = metadata.title || entry;
+              groupLabel = title;
             }
             items.push({
               label: groupLabel,
@@ -161,20 +222,27 @@ export default function starlightIndexOnlySidebar(options: TIndexOnlySidebarPlug
     hooks: {
       "config:setup": (hookOptions: HookParameters<"config:setup">) => {
         const { updateConfig } = hookOptions;
+        const dirnameDeterminesLabel = options.dirnameDeterminesLabel ?? false;
 
-        const sidebarItems = options.directories.map((dirConfig) => {
-          const dirItems = buildIndexSidebar(
-            join(SITE_DOCS_ROOT, dirConfig.directory),
-            dirConfig.directory,
-            SITE_DOCS_ROOT,
-            options.dirnameDeterminesLabel ?? false
-          );
+        const sidebarItems = options.directories
+          .map((dirConfig) => {
+            const dirItems = buildIndexSidebar(
+              join(SITE_DOCS_ROOT, dirConfig.directory),
+              dirConfig.directory,
+              SITE_DOCS_ROOT,
+              dirnameDeterminesLabel
+            );
 
-          return {
-            label: dirConfig.label,
-            items: dirItems,
-          };
-        });
+            const label = dirnameDeterminesLabel
+              ? pathSegmentToLabel(dirConfig.directory)
+              : dirConfig.label;
+
+            return {
+              label,
+              items: dirItems,
+            };
+          })
+          .filter((group) => group.items.length > 0); // remove empty groups
 
         updateConfig({
           sidebar: sidebarItems,
