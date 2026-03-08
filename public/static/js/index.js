@@ -16,7 +16,7 @@ function hideSingleLineGutters() {
 
 /** Wrap details content in a div.details-wrapper, keeping summary outside */
 function wrapDetailsContent() {
-  const detailsElements = document.querySelectorAll("details:not([class])");
+  const detailsElements = document.querySelectorAll(".main-pane details");
   detailsElements.forEach((details) => {
     if (details.children.length === 0) return;
 

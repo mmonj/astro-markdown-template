@@ -25,27 +25,29 @@ starlight-toc {
 }
 
 /************ Details/Summary ************/
-details:not([class]) {
-  background: hsla(225.4, 16.5%, 48.8%, 0.11);
-  border-radius: 4px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  display: block;
-}
-
-details[open]:not([class]) {
-  max-width: 100%;
-
-  > div.details-wrapper {
-    overflow-x: auto;
-    max-height: 75vh;
-    overflow-y: auto;
-    padding: 0.25rem;
+.main-pane {
+  details {
+    background: hsla(225.4, 16.5%, 48.8%, 0.11);
+    border-radius: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    display: block;
   }
 
-  p > img {
-    height: auto;
-    width: auto;
+  details[open] {
+    max-width: 100%;
+
+    > div.details-wrapper {
+      overflow-x: auto;
+      max-height: 75vh;
+      overflow-y: auto;
+      padding: 0.25rem;
+    }
+
+    p > img {
+      height: auto;
+      width: auto;
+    }
   }
 }
 
