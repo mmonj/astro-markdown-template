@@ -2,6 +2,19 @@ html {
   scroll-behavior: smooth;
 }
 
+/************ Starlight Additions/Overrides ************/
+
+starlight-toc {
+  a[aria-current="true"] {
+    span {
+      border-left: 3px solid var(--sl-color-text-accent);
+      border-radius: 2px;
+      padding-left: 0.5rem;
+      margin-left: -0.5rem;
+    }
+  }
+}
+
 .sl-container:where(.astro-7nkwcw3z) {
   max-width: 50rem;
 }
