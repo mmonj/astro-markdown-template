@@ -4,6 +4,10 @@ html {
 
 /************ Starlight Additions/Overrides ************/
 
+.sl-container:where(.astro-7nkwcw3z) {
+  max-width: 50rem;
+}
+
 starlight-toc {
   a[aria-current="true"] {
     span {
@@ -15,8 +19,9 @@ starlight-toc {
   }
 }
 
-.sl-container:where(.astro-7nkwcw3z) {
-  max-width: 50rem;
+.expressive-code .copy > button {
+  height: 2rem;
+  width: 2rem;
 }
 
 /************ Details/Summary ************/
