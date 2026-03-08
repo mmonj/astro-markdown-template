@@ -269,7 +269,7 @@ Starlight markdown files support the following frontmatter fields:
 | :------------ | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `title`       | string         | **Required** Page title displayed in the browser and navigation. You may enclose the title value in quotes if it contains special characters, such as `:`, `[`, `]`, etc. |
 | `description` | string         | Page description for SEO meta tags                                                                                                                                        |
-| `draft`       | boolean        | Mark page as draft (hidden from search and sidebars, though still compiled to HTML and included in the build)                                                             |
+| `draft`       | boolean        | Mark page as draft (not included in production build, so it's hidden from search and sidebars)                                                                            |
 | `sidebar`     | object         | Control sidebar visibility: `{ hidden: true }` hides from sidebar                                                                                                         |
 | `order`       | number         | Sort order in auto-generated sidebars (lower numbers appear first)                                                                                                        |
 | `pagefind`    | boolean        | Whether to include this page in search results (default: `true`)                                                                                                          |
