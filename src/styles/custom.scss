@@ -47,6 +47,12 @@ starlight-toc {
   color: hsl(339.8, 63.4%, 60.4%);
 }
 
+#starlight__mobile-toc {
+  > .dropdown {
+    border-bottom: 1px solid hsla(0, 0%, 100%, 0.6);
+  }
+}
+
 .expressive-code .copy > button {
   height: 2rem;
   width: 2rem;
