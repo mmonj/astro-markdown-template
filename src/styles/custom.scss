@@ -14,11 +14,21 @@ starlight-toc {
     transform-origin: left;
 
     span {
-      border-left: 3px solid transparent;
-      border-radius: 2px;
-      padding-left: 0.5rem;
-      margin-left: -0.5rem;
-      transition: border-color 0.2s ease;
+      position: relative;
+      display: inline-block;
+      transition: color 0.2s ease;
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: -8px;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background-color: transparent;
+        border-radius: 2px;
+        transition: background-color 0.2s ease;
+      }
     }
   }
 
@@ -26,7 +36,9 @@ starlight-toc {
     transform: scale(1.04);
 
     span {
-      border-left-color: var(--sl-color-text-accent);
+      &::before {
+        background-color: var(--sl-color-text-accent);
+      }
     }
   }
 }
