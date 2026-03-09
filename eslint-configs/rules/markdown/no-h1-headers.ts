@@ -46,8 +46,21 @@ export const noH1Headers: Rule.RuleModule = {
         const frontmatterEndLine = getFrontmatterEndLine(text);
 
         // check for h1 headers
+        let inFencedCodeBlock = false;
         for (let i = frontmatterEndLine; i < lines.length; i++) {
           const line = lines[i];
+
+          // fenced code block delimiter
+          if (/^(```|~~~)/.test(line)) {
+            inFencedCodeBlock = !inFencedCodeBlock;
+            continue;
+          }
+
+          // skip lines inside fenced code blocks
+          if (inFencedCodeBlock) {
+            continue;
+          }
+
           if (/^#\s+/.test(line)) {
             context.report({
               loc: { line: i + 1, column: 0 },
