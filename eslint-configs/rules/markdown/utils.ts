@@ -16,7 +16,7 @@ export function shouldApplyRule(filename: string, dirFilter: string | undefined)
  * Returns the frontmatter string (without the --- delimiters) if it exists
  */
 export function extractFrontmatter(text: string): string | null {
-  const frontmatterMatch = text.match(/^---\n([\s\S]*?)\n---/);
+  const frontmatterMatch = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   return frontmatterMatch ? frontmatterMatch[1] : null;
 }
 
