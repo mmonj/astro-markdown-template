@@ -27,7 +27,7 @@ export default defineConfig({
       title: "My Grand Amazing Site",
       tableOfContents: {
         minHeadingLevel: 2, // h1 not included since it conflicts with frontmatter title
-        maxHeadingLevel: 4, // include up to h4 in table of contents
+        maxHeadingLevel: 6, // include up to h6 in table of contents
       },
       plugins: [
         starlightIndexOnlySidebar({
