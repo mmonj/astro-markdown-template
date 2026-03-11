@@ -10,7 +10,7 @@ import { requireFrontmatter } from "./eslint-configs/rules/markdown/require-fron
 
 export default defineConfig([
   {
-    ignores: ["dist/"],
+    ignores: ["dist/", ".astro/"],
   },
   {
     files: ["**/*.{js,mjs,cjs,ts,mts,cts}"],
