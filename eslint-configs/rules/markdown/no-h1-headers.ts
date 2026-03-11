@@ -1,6 +1,6 @@
 import type { Rule } from "eslint";
 
-import { getFencedCodeBlockRanges, getFrontmatterEndLine, isLineInFencedCodeBlock } from "./utils";
+import { FencedCodeBlockTracker, getFrontmatterEndLine } from "./utils";
 
 export const noH1Headers: Rule.RuleModule = {
   meta: {
@@ -25,14 +25,14 @@ export const noH1Headers: Rule.RuleModule = {
         const text = sourceCode.getText();
         const lines = text.split("\n");
         const frontmatterEndLine = getFrontmatterEndLine(text);
-        const codeBlockRanges = getFencedCodeBlockRanges(text);
+        const codeBlockTracker = new FencedCodeBlockTracker(text);
 
         // check for h1 headers
         for (let i = frontmatterEndLine; i < lines.length; i++) {
           const line = lines[i];
 
           // skip lines inside fenced code blocks
-          if (isLineInFencedCodeBlock(i, codeBlockRanges)) {
+          if (codeBlockTracker.isLineInFencedCodeBlock(i)) {
             continue;
           }
 

@@ -45,7 +45,7 @@ export function getFrontmatterEndLine(text: string): number {
  * Correctly handles indented code blocks (e.g., nested under list items)
  * because fence delimiters are detected anywhere on the line after trimming
  */
-export function getFencedCodeBlockRanges(text: string): Array<[number, number]> {
+function getFencedCodeBlockRanges(text: string): Array<[number, number]> {
   const lines = text.split("\n");
   const ranges: Array<[number, number]> = [];
 
@@ -78,29 +78,43 @@ export function getFencedCodeBlockRanges(text: string): Array<[number, number]> 
   return ranges;
 }
 
-/**
- * Check if a line index is inside a fenced code block
- * Uses binary search for O(log n) efficiency on sorted ranges
- */
-export function isLineInFencedCodeBlock(
-  lineIndex: number,
-  codeBlockRanges: Array<[number, number]>
-): boolean {
-  let left = 0;
-  let right = codeBlockRanges.length - 1;
+export class FencedCodeBlockTracker {
+  private ranges: Array<[number, number]>;
+  private currentRangeIndex: number = 0;
 
-  while (left <= right) {
-    const mid = Math.floor((left + right) / 2);
-    const [start, end] = codeBlockRanges[mid];
-
-    if (lineIndex < start) {
-      right = mid - 1;
-    } else if (lineIndex > end) {
-      left = mid + 1;
-    } else {
-      return true;
-    }
+  constructor(text: string) {
+    this.ranges = getFencedCodeBlockRanges(text);
   }
 
-  return false;
+  isLineInFencedCodeBlock(lineIndex: number): boolean {
+    if (this.ranges.length === 0) {
+      return false;
+    }
+
+    if (this.currentRangeIndex >= this.ranges.length) {
+      return false;
+    }
+
+    const [start, end] = this.ranges[this.currentRangeIndex];
+
+    if (lineIndex < start) {
+      return false;
+    }
+
+    if (lineIndex <= end) {
+      return true;
+    }
+
+    this.currentRangeIndex++;
+    if (this.currentRangeIndex >= this.ranges.length) {
+      return false;
+    }
+
+    const [nextStart, nextEnd] = this.ranges[this.currentRangeIndex];
+    if (lineIndex >= nextStart && lineIndex <= nextEnd) {
+      return true;
+    }
+
+    return false;
+  }
 }
