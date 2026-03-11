@@ -88,17 +88,14 @@ starlight-toc {
 /********** MathJax/LaTeX Styling **********/
 mjx-container[jax="SVG"] {
   display: inline-block;
-}
 
-mjx-container[jax="SVG"][display="true"] {
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
-  margin: 1em 0;
-}
+  &[display="true"] {
+    text-align: center;
+  }
 
-mjx-container[jax="SVG"] > svg {
-  display: unset;
+  > svg {
+    display: unset;
+  }
 }
 
 /********** TikZ SVG Styling **********/
@@ -108,17 +105,17 @@ script[type="text/tikz"] {
 
 div > div[class="page"] > svg {
   color-scheme: light dark;
-}
 
-html[data-theme="light"] div > div[class="page"] > svg {
-  stroke: currentColor;
-  fill: currentColor;
-}
+  html[data-theme="light"] & {
+    stroke: currentColor;
+    fill: currentColor;
+  }
 
-html:not([data-theme="light"]) div > div[class="page"] > svg {
-  stroke: white;
-  fill: white;
-  filter: invert(1) hue-rotate(180deg);
+  html:not([data-theme="light"]) & {
+    stroke: white;
+    fill: white;
+    filter: invert(1) hue-rotate(180deg);
+  }
 }
 
 /********** Mimic Bootstrap Class Utilities **********/
