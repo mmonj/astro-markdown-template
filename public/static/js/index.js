@@ -14,6 +14,19 @@ function hideSingleLineGutters() {
   });
 }
 
+/** Mark mjx-container elements as display math if they're the only child in a paragraph */
+function markDisplayMath() {
+  const mjxContainers = document.querySelectorAll("mjx-container");
+
+  mjxContainers.forEach((container) => {
+    const parent = container.parentElement;
+
+    if (parent && parent.tagName === "P" && parent.children.length === 1) {
+      container.setAttribute("display", "true");
+    }
+  });
+}
+
 /** Wrap details content in a div.details-wrapper, keeping summary outside */
 function wrapDetailsContent() {
   const detailsElements = document.querySelectorAll(".main-pane details");
@@ -53,5 +66,6 @@ function wrapDetailsContent() {
 
 (() => {
   hideSingleLineGutters();
+  markDisplayMath();
   wrapDetailsContent();
 })();

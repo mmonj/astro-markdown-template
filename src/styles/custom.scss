@@ -58,7 +58,7 @@ starlight-toc {
   width: 2rem;
 }
 
-/************ Details/Summary ************/
+/************ Details/Summary Styles ************/
 .main-pane {
   details {
     background: hsla(225.4, 16.5%, 48.8%, 0.11);
@@ -88,8 +88,6 @@ starlight-toc {
 /********** MathJax/LaTeX Styling **********/
 mjx-container[jax="SVG"] {
   display: inline-block;
-  vertical-align: text-bottom;
-  margin: 0;
 }
 
 mjx-container[jax="SVG"][display="true"] {
@@ -97,6 +95,10 @@ mjx-container[jax="SVG"][display="true"] {
   justify-content: center;
   align-items: center;
   margin: 1em 0;
+}
+
+mjx-container[jax="SVG"] > svg {
+  display: unset;
 }
 
 /********** TikZ SVG Styling **********/
