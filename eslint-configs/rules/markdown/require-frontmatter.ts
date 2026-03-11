@@ -1,6 +1,6 @@
 import type { Rule } from "eslint";
 
-import { extractFrontmatter, shouldApplyRule } from "./utils";
+import { extractFrontmatter } from "./utils";
 
 export const requireFrontmatter: Rule.RuleModule = {
   meta: {
@@ -8,22 +8,8 @@ export const requireFrontmatter: Rule.RuleModule = {
     docs: {
       description: "Require title field in frontmatter",
     },
-    schema: [
-      {
-        type: "object",
-        properties: {
-          dir: {
-            type: "string",
-            description: "Directory path to enforce this rule for",
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
   } as const,
   create(context: Rule.RuleContext): Rule.RuleListener {
-    const options = (context.options[0] as { dir?: string }) || {};
-    const dirFilter = options.dir;
     let alreadyProcessed = false;
 
     return {
@@ -31,11 +17,6 @@ export const requireFrontmatter: Rule.RuleModule = {
         if (alreadyProcessed || (node as unknown as { type: string }).type !== "root") return;
 
         alreadyProcessed = true;
-
-        // check if the file is in the specified directory if provided
-        if (!shouldApplyRule(context.filename, dirFilter)) {
-          return;
-        }
 
         const sourceCode = context.sourceCode;
         if (!sourceCode) return;

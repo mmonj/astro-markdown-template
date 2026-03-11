@@ -10,6 +10,9 @@ import { requireFrontmatter } from "./eslint-configs/rules/markdown/require-fron
 
 export default defineConfig([
   {
+    ignores: ["dist/"],
+  },
+  {
     files: ["**/*.{js,mjs,cjs,ts,mts,cts}"],
     plugins: { js },
     extends: ["js/recommended"],
@@ -17,12 +20,13 @@ export default defineConfig([
   },
   tseslint.configs.recommended,
   {
+    files: ["**/*.{ts,mts,cts}"],
     rules: {
       "@typescript-eslint/no-unused-vars": "off",
     },
   },
   {
-    files: ["**/*.md"],
+    files: ["src/**/*.md"],
     plugins: {
       // @ts-expect-error - Type 'typeof plugin' is not assignable to type 'Plugin'.
       markdown,
@@ -36,8 +40,8 @@ export default defineConfig([
     language: "markdown/gfm",
     extends: ["markdown/recommended"],
     rules: {
-      "custom/require-frontmatter": ["error", { dir: "src/content/docs/" }],
-      "custom/no-h1-headers": ["error", { dir: "src/content/docs/" }],
+      "custom/require-frontmatter": "error",
+      "custom/no-h1-headers": "error",
       "markdown/no-missing-label-refs": "off",
     },
   },
