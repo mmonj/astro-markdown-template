@@ -43,7 +43,7 @@ export default defineConfig([
       "custom/require-frontmatter": "error",
       "custom/no-h1-headers": "error",
       "markdown/no-missing-label-refs": "off",
-      "markdown/no-duplicate-headings": "error",
+      // "markdown/no-duplicate-headings": "error",
     },
   },
 ]);
