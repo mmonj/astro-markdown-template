@@ -5,8 +5,8 @@ import { defineConfig } from "eslint/config";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
-import { noH1Headers } from "./eslint-configs/rules/markdown/no-h1-headers";
-import { requireFrontmatter } from "./eslint-configs/rules/markdown/require-frontmatter";
+import { noH1Headers } from "./eslint-configs/plugins/markdown/no-h1-headers";
+import { requireFrontmatter } from "./eslint-configs/plugins/markdown/require-frontmatter";
 
 export default defineConfig([
   {
