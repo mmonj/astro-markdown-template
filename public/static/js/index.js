@@ -21,8 +21,17 @@ function markDisplayMath() {
   mjxContainers.forEach((container) => {
     const parent = container.parentElement;
 
+    // Verify that parent has only one element child (the mathjax container),
+    // and has no non-whitespace text content
     if (parent && parent.tagName === "P" && parent.children.length === 1) {
-      container.setAttribute("display", "true");
+      // Check if there are any non-whitespace text nodes
+      const hasNonWhitespaceText = Array.from(parent.childNodes).some(
+        (node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0
+      );
+
+      if (!hasNonWhitespaceText) {
+        container.setAttribute("display", "true");
+      }
     }
   });
 }
