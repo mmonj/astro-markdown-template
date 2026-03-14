@@ -87,12 +87,6 @@ starlight-toc {
 
 /********** MathJax/LaTeX Styling **********/
 mjx-container[jax="SVG"] {
-  display: inline-block;
-
-  &[display="true"] {
-    text-align: center;
-  }
-
   > svg {
     display: unset;
   }
