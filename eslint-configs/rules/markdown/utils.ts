@@ -1,18 +1,4 @@
 /**
- * Check if the current file path matches the directory filter
- */
-export function shouldApplyRule(filename: string, dirFilter: string | undefined): boolean {
-  if (!dirFilter) {
-    return true;
-  }
-
-  const normalizedDir = dirFilter.replace(/\\/g, "/");
-  const normalizedPath = filename.replace(/\\/g, "/");
-
-  return normalizedPath.includes(normalizedDir);
-}
-
-/**
  * Returns the frontmatter string (without the --- delimiters) if it exists
  */
 export function extractFrontmatter(text: string): string | null {
