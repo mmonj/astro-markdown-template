@@ -86,35 +86,32 @@ export class FencedCodeBlockTracker {
     this.ranges = getFencedCodeBlockRanges(text);
   }
 
+  /**
+   * Check if a given line index falls within any fenced code block range.
+   */
   isLineInFencedCodeBlock(lineIndex: number): boolean {
     if (this.ranges.length === 0) {
       return false;
     }
 
-    if (this.currentRangeIndex >= this.ranges.length) {
-      return false;
+    while (this.currentRangeIndex < this.ranges.length) {
+      const [start, end] = this.ranges[this.currentRangeIndex];
+
+      if (lineIndex < start) {
+        return false;
+      }
+
+      if (lineIndex >= start && lineIndex <= end) {
+        return true;
+      }
+
+      if (lineIndex > end) {
+        this.currentRangeIndex++;
+        continue;
+      }
     }
 
-    const [start, end] = this.ranges[this.currentRangeIndex];
-
-    if (lineIndex < start) {
-      return false;
-    }
-
-    if (lineIndex <= end) {
-      return true;
-    }
-
-    this.currentRangeIndex++;
-    if (this.currentRangeIndex >= this.ranges.length) {
-      return false;
-    }
-
-    const [nextStart, nextEnd] = this.ranges[this.currentRangeIndex];
-    if (lineIndex >= nextStart && lineIndex <= nextEnd) {
-      return true;
-    }
-
+    // lineIndex is past all ranges
     return false;
   }
 }
