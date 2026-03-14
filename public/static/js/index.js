@@ -14,28 +14,6 @@ function hideSingleLineGutters() {
   });
 }
 
-/** Mark mjx-container elements as display math if they're the only child in a paragraph */
-function markDisplayMath() {
-  const mjxContainers = document.querySelectorAll("mjx-container");
-
-  mjxContainers.forEach((container) => {
-    const parent = container.parentElement;
-
-    // Verify that parent has only one element child (the mathjax container),
-    // and has no non-whitespace text content
-    if (parent && parent.tagName === "P" && parent.children.length === 1) {
-      // Check if there are any non-whitespace text nodes
-      const hasNonWhitespaceText = Array.from(parent.childNodes).some(
-        (node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0
-      );
-
-      if (!hasNonWhitespaceText) {
-        container.setAttribute("display", "true");
-      }
-    }
-  });
-}
-
 /** Wrap details content in a div.details-wrapper, keeping summary outside */
 function wrapDetailsContent() {
   const detailsElements = document.querySelectorAll(".main-pane details");
@@ -75,6 +53,5 @@ function wrapDetailsContent() {
 
 (() => {
   hideSingleLineGutters();
-  markDisplayMath();
   wrapDetailsContent();
 })();
