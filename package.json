@@ -30,6 +30,7 @@
     "@typescript-eslint/eslint-plugin": "^8.56.1",
     "@typescript-eslint/parser": "^8.56.1",
     "eslint": "^10.0.2",
+    "eslint-md-cannoli-plugins": "^1.0.2",
     "globals": "^17.4.0",
     "jiti": "^2.6.1",
     "sass-embedded": "^1.97.3",

@@ -1,12 +1,10 @@
 import js from "@eslint/js";
 import markdown from "@eslint/markdown";
 
+import { noH1Headers, requireFrontmatter } from "eslint-md-cannoli-plugins";
 import { defineConfig } from "eslint/config";
 import globals from "globals";
 import tseslint from "typescript-eslint";
-
-import { noH1Headers } from "./eslint-configs/plugins/markdown/no-h1-headers";
-import { requireFrontmatter } from "./eslint-configs/plugins/markdown/require-frontmatter";
 
 export default defineConfig([
   {
@@ -30,7 +28,7 @@ export default defineConfig([
     plugins: {
       // @ts-expect-error - Type 'typeof plugin' is not assignable to type 'Plugin'.
       markdown,
-      custom: {
+      cannoli: {
         rules: {
           "require-frontmatter": requireFrontmatter,
           "no-h1-headers": noH1Headers,
@@ -40,8 +38,8 @@ export default defineConfig([
     language: "markdown/gfm",
     extends: ["markdown/recommended"],
     rules: {
-      "custom/require-frontmatter": "error",
-      "custom/no-h1-headers": "error",
+      "cannoli/require-frontmatter": "error",
+      "cannoli/no-h1-headers": "error",
       "markdown/no-missing-label-refs": "off",
       // "markdown/no-duplicate-headings": "error",
     },
