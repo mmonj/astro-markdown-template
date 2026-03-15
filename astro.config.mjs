@@ -22,7 +22,7 @@ export default defineConfig({
   },
   integrations: [
     starlight({
-      title: "My Grand Amazing Site",
+      title: "My Grand Amazing Site", // fix-me
       tableOfContents: {
         minHeadingLevel: 2, // h1 not included since it conflicts with frontmatter title
         maxHeadingLevel: 6, // include up to h6 in table of contents
