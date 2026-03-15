@@ -59,24 +59,20 @@ starlight-toc {
 }
 
 /************ Details/Summary Styles ************/
-.main-pane {
-  details {
-    background: hsla(225.4, 16.5%, 48.8%, 0.11);
-    border-radius: 4px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    display: block;
-  }
+.main-pane details {
+  background: hsla(225.4, 16.5%, 48.8%, 0.11);
+  border-radius: 4px;
+  padding: 0.3rem 0.6rem;
+  display: block;
 
-  details[open] {
+  &[open] {
     max-width: 100%;
 
     > div.details-wrapper {
-      overflow-x: auto;
+      overflow: auto;
       max-height: 75vh;
-      overflow-y: auto;
-      padding-right: 1rem;
-      padding: 0.5rem 1rem;
+      padding-right: 0.8rem;
+      padding-left: 0.8rem;
     }
 
     p > img {
