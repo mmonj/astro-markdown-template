@@ -141,19 +141,21 @@ export default defineConfig({
 
 ### Approach 4: Index-Only Auto-Discovery with Custom Plugin
 
-This project uses a custom Starlight plugin (`indexOnlySidebarPlugin`) that automatically discovers and indexes **only** `index.md` files within specified directories. This is useful when your documentation structure relies on handrolled index files to present directory-level page structure.
+This project uses a custom Starlight plugin (`starlightIndexOnlySidebar`) that automatically discovers and indexes **only** `index.md` or `index.mdx` files within specified directories. This is useful when your documentation structure relies on handrolled index files to present directory-level page structure.
 
 **How it works:**
 
-- Scans provided directories recursively for `index.md` files
-- Extracts page titles from frontmatter `title` field for labels (or uses directory names if `dirnameDeterminesLabel: true`)
-- Automatically creates nested groups based on directory hierarchy
-- Sorts items consistently: page links before groups
+- Scans provided directories recursively for `index.md` or `index.mdx` files
+- Creates nested groups based on directory hierarchy, with automatic truncation of single-child intermediate groups
+- Excludes empty directories and `assets` folders
+- Respects `draft: true` and `sidebar: { hidden: true }` frontmatter to exclude pages
+- Extracts page labels from frontmatter `title` field (when `dirnameDeterminesLabels: false`) or uses directory names (when `dirnameDeterminesLabels: true`)
+- Supports depth limiting to flatten deeply nested content when needed
 
 **Configuration in `astro.config.mjs`:**
 
 ```javascript
-import indexOnlySidebarPlugin from "./src/plugins/index-only-sidebar";
+import { starlightIndexOnlySidebar } from "starlight-cannoli-plugins";
 
 export default defineConfig({
   ...
@@ -163,18 +165,14 @@ export default defineConfig({
       ...
       ...
       plugins: [
-        indexOnlySidebarPlugin({
+        starlightIndexOnlySidebar({
+          maxDepthNesting: 100,
+          dirnameDeterminesLabels: true,
           directories: [
-            { label: "Reference", directory: "reference" },
-            { label: "Algorithms", directory: "csci-323-algorithms" },
-            {
-              label: "Operating Systems",
-              directory: "csci-340-operating-systems",
-            },
-            {
-              label: "Algorithms for Big Data",
-              directory: "csci-328-algorithms-for-big-data",
-            },
+            "reference",
+            "csci-323-algorithms",
+            "csci-340-operating-systems",
+            "csci-328-algorithms-for-big-data",
           ],
         }),
       ],
@@ -185,63 +183,76 @@ export default defineConfig({
 });
 ```
 
-**Label Generation:**
+**Options:**
 
-The `dirnameDeterminesLabel` option (defaults to `false`) controls how group labels and page titles are determined:
+- **`maxDepthNesting`** (default: `100`) — Controls the maximum nesting depth for groups (where the root directory is level 0). Once this depth is reached, any `index.md`/`index.mdx` files found deeper are flattened as single slug items at the current level instead of being nested further.
 
-- **`dirnameDeterminesLabel: false` (default)** — Uses frontmatter `title` field for labels
-  - Example: Directory `csci-316-kong` with `title: "CSCI 316 Principles of Programming Languages"` displays as "CSCI 316 Principles of Programming Languages"
-  - Falls back to directory name if no `title` in frontmatter
+- **`dirnameDeterminesLabels`** (default: `true`) — Controls how labels are determined:
+  - **`true`** — All labels (group labels and slug item labels) use the raw directory name as-is
+    - Example: Directory `even-more-fundie` displays as "even-more-fundie"
+  - **`false`** — Slug item labels are read from the `title` field in frontmatter; group labels still use the raw directory name
+    - Example: Directory `csci-316-kong` with `title: "CSCI 316 Principles of Programming Languages"` displays as "CSCI 316 Principles of Programming Languages"
+    - Falls back to directory name if no `title` in frontmatter
 
-- **`dirnameDeterminesLabel: true`** — Converts directory names to human-readable labels automatically
-  - Example: Directory `csci-316-kong` displays as "CSCI 316 Kong"
-  - Handles patterns like `csci-316` → `CSCI 316` (uppercases acronyms)
-  - Converts hyphens to spaces and title-cases words
+**Example: Depth Limiting and Single-Child Truncation**
 
-**Example structure with automatic result:**
+With `maxDepthNesting: 1` and `dirnameDeterminesLabels: true`, the root directory is level 0, so children are level 1. Once that depth is reached, deeper `index.md` files are flattened as single slug items, and single-child intermediate groups are collapsed away:
 
 Directory structure:
 
 ```text
-src/content/docs/notes/
+my-course/
   ├── index.md
-  ├── csci-316-kong/
-  │   ├── index.md
-  │   ├── announcements/
-  │   │   └── index.md
-  │   ├── slides/
-  │   │   └── index.md
-  │   └── reviews/
-  │       ├── index.md
-  │       └── exam1-review/
-  │           ├── hard/
-  │           │   └── index.md
-  │           └── intermediate/
-  │               └── index.md
+  ├── notes/              (no index.md — empty, excluded)
+  └── lectures/
+      ├── fundamentals/
+      │   └── index.md
+      └── advanced/
+          └── intermediate/
+              ├── index.md
+              └── complex/
+                  └── index.md
 ```
 
-Generated sidebar with `dirnameDeterminesLabel: true`:
+Generated sidebar output:
 
 ```text
-Notes
-  ├── Notes (from "notes")
-  └── CSCI 316 Kong (group, from "csci-316-kong")
-      ├── CSCI 316 Kong (from "csci-316-kong")
-      ├── Announcements (from "announcements")
-      ├── Slides (from "slides")
-      └── Reviews (group, from "reviews")
-          ├── Reviews (from "reviews")
-          ├── Hard (from "exam1-review/hard")
-          └── Intermediate (from "exam1-review/intermediate")
+[
+  {
+    label: "my-course",
+    items: [
+      { label: "my-course", slug: "my-course/index" },
+      {
+        label: "lectures",
+        items: [
+          {
+            label: "fundamentals",
+            slug: "my-course/lectures/fundamentals/index",
+          },
+          {
+            label: "intermediate",
+            slug: "my-course/lectures/advanced/intermediate/index",
+          },
+          {
+            label: "complex",
+            slug: "my-course/lectures/advanced/intermediate/complex/index",
+          },
+        ],
+      },
+    ],
+  },
+]
 ```
+
+Note: `notes` is excluded (empty), `advanced` is collapsed away (single-child with no `index.md`), and the two deeper items are flattened into `lectures` items.
 
 **When to use this approach:**
 
-- Your documentation relies on the organization of content existing in `index.md` files
-- You want automatic discovery without manual configuration
+- Your documentation relies on `index.md` files to define page structure
+- You want automatic discovery without manually listing every page
 - You prefer directory structure to determine sidebar hierarchy
-- You want page titles pulled from frontmatter (use `dirnameDeterminesLabel: false`)
-- You want consistent directory-derived labels without managing frontmatter (use `dirnameDeterminesLabel: true`)
+- You want page titles pulled from frontmatter (use `dirnameDeterminesLabels: false`)
+- You want consistent directory-derived labels without managing frontmatter (use `dirnameDeterminesLabels: true`)
 
 ### Notes on Page Visibility
 
