@@ -1,7 +1,7 @@
 import js from "@eslint/js";
 import markdown from "@eslint/markdown";
 
-import { noH1Headers, requireFrontmatter } from "eslint-md-cannoli-plugins";
+import { noH1Headers, requireFrontmatter } from "eslint-cannoli-plugins";
 import { defineConfig } from "eslint/config";
 import globals from "globals";
 import tseslint from "typescript-eslint";
