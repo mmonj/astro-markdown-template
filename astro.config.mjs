@@ -6,9 +6,7 @@ import { defineConfig } from "astro/config";
 import rehypeGraphviz from "rehype-graphviz";
 import rehypeMathjax from "rehype-mathjax";
 import remarkMath from "remark-math";
-
-import rehypeValidateLinks from "./src/plugins/rehype-validate-links";
-import starlightIndexOnlySidebar from "./src/plugins/starlight-index-only-sidebar";
+import { rehypeValidateLinks, starlightIndexOnlySidebar } from "starlight-cannoli-plugins";
 
 // https://astro.build/config
 export default defineConfig({
