@@ -21,7 +21,7 @@
     "rehype-raw": "^7.0.0",
     "remark-math": "^6.0.0",
     "sharp": "^0.34.2",
-    "starlight-cannoli-plugins": "^1.0.0",
+    "starlight-cannoli-plugins": "^1.0.1",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
@@ -31,7 +31,7 @@
     "@typescript-eslint/eslint-plugin": "^8.56.1",
     "@typescript-eslint/parser": "^8.56.1",
     "eslint": "^10.0.2",
-    "eslint-cannoli-plugins": "^1.0.7",
+    "eslint-cannoli-plugins": "^1.0.8",
     "globals": "^17.4.0",
     "jiti": "^2.6.1",
     "sass-embedded": "^1.97.3",
