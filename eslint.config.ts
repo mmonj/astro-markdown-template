@@ -38,6 +38,7 @@ export default defineConfig([
       "cannoliMarkdown/require-frontmatter": "error",
       "cannoliMarkdown/no-h1-headers": "error",
       "cannoliMarkdown/enforce-link-convention": "error",
+      "cannoliMarkdown/no-escape-latex-delimiters": "warn",
       // "cannoliMarkdown/require-blank-line-after-html": "error",
       // "cannoliMarkdown/require-display-math-formatting": "error",
       // "cannoliMarkdown/inline-math-alone-on-line": "error",
