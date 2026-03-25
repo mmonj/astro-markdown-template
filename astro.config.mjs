@@ -3,10 +3,28 @@ import starlight from "@astrojs/starlight";
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 
 import { defineConfig } from "astro/config";
+import addClasses from "rehype-class-names";
 import rehypeGraphviz from "rehype-graphviz";
-import rehypeMathjax from "rehype-mathjax";
+import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
-import { rehypeValidateLinks, starlightIndexOnlySidebar } from "starlight-cannoli-plugins";
+import {
+  astroNormalizePaths,
+  rehypeValidateLinks,
+  starlightIndexOnlySidebar,
+} from "starlight-cannoli-plugins";
+
+// Common Config Items
+const SITE_NAME = "My Grand Amazing Site";
+const STARLIGHT_SIDEBAR_CONFIG = starlightIndexOnlySidebar({
+  maxDepthNesting: 0,
+  dirnameDeterminesLabels: true,
+  directories: [
+    "reference",
+    "csci-323-algorithms",
+    "csci-340-operating-systems",
+    "csci-328-algorithms-for-big-data",
+  ],
+});
 
 // https://astro.build/config
 export default defineConfig({
@@ -15,31 +33,26 @@ export default defineConfig({
       remarkMath, // adds support for math
     ],
     rehypePlugins: [
-      rehypeMathjax, // co-dependent with remark-math
+      rehypeKatex, // co-dependent with remark-math
+      [addClasses, { ".katex": "not-content", "mjx-container>svg": "not-content" }],
       rehypeGraphviz, // Graphviz diagram support
       rehypeValidateLinks, // validate links and convert to absolute paths
     ],
   },
   integrations: [
+    astroNormalizePaths(),
     starlight({
-      title: "My Grand Amazing Site", // fix-me
+      title: SITE_NAME,
       tableOfContents: {
         minHeadingLevel: 2, // h1 not included since it conflicts with frontmatter title
         maxHeadingLevel: 6, // include up to h6 in table of contents
       },
-      plugins: [
-        starlightIndexOnlySidebar({
-          maxDepthNesting: 1,
-          dirnameDeterminesLabels: false,
-          directories: [
-            "reference",
-            "csci-323-algorithms",
-            "csci-340-operating-systems",
-            "csci-328-algorithms-for-big-data",
-          ],
-        }),
+      plugins: [STARLIGHT_SIDEBAR_CONFIG],
+      customCss: [
+        "starlight-cannoli-plugins/styles/custom.scss",
+        "/src/styles/custom.scss",
+        "katex/dist/katex.min.css",
       ],
-      customCss: ["./src/styles/custom.scss"],
       expressiveCode: {
         plugins: [pluginLineNumbers()],
         defaultProps: {
@@ -62,4 +75,9 @@ export default defineConfig({
       ],
     }),
   ],
+  vite: {
+    ssr: {
+      noExternal: ["katex"],
+    },
+  },
 });
