@@ -36,11 +36,11 @@ export default defineConfig({
       rehypeKatex, // co-dependent with remark-math
       [addClasses, { ".katex": "not-content", "mjx-container>svg": "not-content" }],
       rehypeGraphviz, // Graphviz diagram support
-      rehypeValidateLinks, // validate links and convert to absolute paths
+      rehypeValidateLinks, // validate links
     ],
   },
   integrations: [
-    astroNormalizePaths(),
+    astroNormalizePaths(), // normalize relative paths to absolute paths; useful for web hosts that add a trailing slash
     starlight({
       title: SITE_NAME,
       tableOfContents: {
