@@ -1,12 +1,16 @@
-import { cp, mkdir, rm, readdir, stat } from "node:fs/promises";
+import { cp, mkdir, readdir, rm, stat } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const PUBLIC_DIR_ROOT = "public/";
 const SRC_DOCS_ROOT = "src/content/docs/";
 
+const DIRS_TO_PRESERVE = [
+  "static", // preserve static/ since it contains important assets like favicon.ico
+];
+
 /**
- * Sync txt files from src/content/docs to public/
+ * Sync files from src/content/docs to public/
  * This allows any local files in docs/ to be served by the web server
  */
 export async function syncDocsToPublic() {
@@ -22,7 +26,7 @@ export async function syncDocsToPublic() {
     const itemPath = resolve(dest, item);
     const stats = await stat(itemPath);
 
-    if (item === "static" || !stats.isDirectory()) {
+    if (DIRS_TO_PRESERVE.includes(item) || !stats.isDirectory()) {
       continue;
     }
 
@@ -30,9 +34,7 @@ export async function syncDocsToPublic() {
   }
 
   await cp(src, dest, { recursive: true });
-  console.log(
-    `Synced ${SRC_DOCS_ROOT} → ${PUBLIC_DIR_ROOT} (preserved public/static/)`
-  );
+  console.log(`Synced ${SRC_DOCS_ROOT} → ${PUBLIC_DIR_ROOT} (preserved public/static/)`);
 }
 
 (async () => {
