@@ -49,7 +49,7 @@ export default defineConfig({
       },
       plugins: [STARLIGHT_SIDEBAR_CONFIG],
       customCss: [
-        "starlight-cannoli-plugins/styles/custom.scss",
+        "starlight-cannoli-plugins/styles/main.scss",
         "/src/styles/custom.scss",
         "katex/dist/katex.min.css",
       ],
