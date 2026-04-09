@@ -3,8 +3,8 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "node scripts/sync-docs-to-public.js && astro dev --port 5500",
-    "build": "node scripts/sync-docs-to-public.js && astro build",
+    "dev": "astro dev --port 5500",
+    "build": "astro build",
     "preview": "astro build && astro preview --port 5500",
     "help": "astro --help",
     "check": "astro check"
@@ -34,7 +34,7 @@
     "rehype-slug": "^6.0.0",
     "remark-math": "^6.0.0",
     "sharp": "^0.34.5",
-    "starlight-cannoli-plugins": "^1.0.15"
+    "starlight-cannoli-plugins": "^1.2.14"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

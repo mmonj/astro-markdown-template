@@ -11,6 +11,8 @@ import {
   astroNormalizePaths,
   rehypeValidateLinks,
   starlightIndexOnlySidebar,
+  starlightLatexCompile,
+  starlightSyncDocsToPublic,
 } from "starlight-cannoli-plugins";
 
 // Common Config Items
@@ -47,7 +49,13 @@ export default defineConfig({
         minHeadingLevel: 2, // h1 not included since it conflicts with frontmatter title
         maxHeadingLevel: 6, // include up to h6 in table of contents
       },
-      plugins: [STARLIGHT_SIDEBAR_CONFIG],
+      plugins: [
+        STARLIGHT_SIDEBAR_CONFIG,
+        starlightLatexCompile({ svgOutputDir: "public/static/tex-svgs" }),
+        starlightSyncDocsToPublic({
+          preserveDirs: ["static"],
+        }),
+      ],
       customCss: [
         "starlight-cannoli-plugins/styles/main.scss",
         "/src/styles/custom.scss",
