@@ -34,7 +34,7 @@
     "rehype-slug": "^6.0.0",
     "remark-math": "^6.0.0",
     "sharp": "^0.34.5",
-    "starlight-cannoli-plugins": "^1.2.17"
+    "starlight-cannoli-plugins": "^2.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -8,11 +8,11 @@ import rehypeGraphviz from "rehype-graphviz";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import {
+  astroLatexCompile,
   astroNormalizePaths,
   rehypeValidateLinks,
   starlightIndexOnlySidebar,
-  starlightLatexCompile,
-  starlightSyncDocsToPublic,
+  syncDocsToPublic,
 } from "starlight-cannoli-plugins";
 
 // Common Config Items
@@ -43,19 +43,18 @@ export default defineConfig({
   },
   integrations: [
     astroNormalizePaths(), // normalize relative paths to absolute paths; useful for web hosts that add a trailing slash
+    astroLatexCompile({
+      svgOutputDir: "public/static/tex-svgs",
+      removeOrphanedSvgs: false,
+    }),
+    syncDocsToPublic({ preserveDirs: ["static"] }),
     starlight({
       title: SITE_NAME,
       tableOfContents: {
         minHeadingLevel: 2, // h1 not included since it conflicts with frontmatter title
         maxHeadingLevel: 6, // include up to h6 in table of contents
       },
-      plugins: [
-        STARLIGHT_SIDEBAR_CONFIG,
-        starlightLatexCompile({ svgOutputDir: "public/static/tex-svgs" }),
-        starlightSyncDocsToPublic({
-          preserveDirs: ["static"],
-        }),
-      ],
+      plugins: [STARLIGHT_SIDEBAR_CONFIG],
       customCss: [
         "starlight-cannoli-plugins/styles/main.scss",
         "/src/styles/custom.scss",
