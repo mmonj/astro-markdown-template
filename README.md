@@ -290,6 +290,66 @@ Starlight markdown files support the following frontmatter fields:
 | `prev`        | object/boolean | Customize or disable the previous page link                                                                                                                               |
 | `next`        | object/boolean | Customize or disable the next page link                                                                                                                                   |
 
+## LaTeX Compile Plugin (`astroLatexCompile`)
+
+The `astroLatexCompile` Astro integration automatically compiles fenced ` ```tex compile ` or ` ```latex compile ` code blocks into SVG files and replaces them with inline `<img>` tags at build time and during dev.
+
+**Setup in `astro.config.mjs`:**
+
+```javascript
+import { astroLatexCompile } from "starlight-cannoli-plugins";
+
+export default defineConfig({
+  integrations: [
+    starlight({ ... }),
+    astroLatexCompile({
+      svgOutputDir: "public/static/tex-svgs",
+      removeOrphanedSvgs: true,
+    }),
+  ],
+});
+```
+
+**Options:**
+
+- **`svgOutputDir`** _(required)_ — Directory where compiled SVG files are written. Must be inside `public/` so Astro serves them as static assets (e.g. `"public/static/tex-svgs"`).
+- **`removeOrphanedSvgs`** _(optional. default: `false`)_ — When `true`, SVG files that are no longer referenced by any `tex compile` block are deleted automatically. In dev mode, stale SVGs are removed immediately when a block is edited; on build, remaining orphans are swept at the end.
+
+**Usage in Markdown:**
+
+````markdown
+```tex compile
+\documentclass[border=5pt]{standalone}
+\usepackage{amsmath}
+
+\begin{document}
+\[
+  \left[\begin{array}{cc|c}
+    2 & 3 & 7 \\
+    1 & -1 & 1
+  \end{array}\right]
+\]
+\end{document}
+```
+````
+
+You can also pass CSS classes via the `class` meta attribute:
+
+````markdown
+```tex compile class="my-diagram centered"
+\documentclass[border=5pt]{standalone}
+\usepackage{amsmath}
+
+\begin{document}
+% Your LaTeX code here
+\end{document}
+```
+````
+
+The code block is replaced with an `<img>` tag pointing to the compiled SVG. The image always has the `tex-compiled` CSS class, plus any additional classes you specify.
+
+> **Note:** `latex compile` is accepted as an alias for `tex compile`.
+
 ## 🧞 Commands
 
 All commands are run from the root of the project, from a terminal:

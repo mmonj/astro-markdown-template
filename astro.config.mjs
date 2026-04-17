@@ -47,7 +47,7 @@ export default defineConfig({
       svgOutputDir: "public/static/tex-svgs",
       removeOrphanedSvgs: false,
     }),
-    syncDocsToPublic({ preserveDirs: ["static"] }),
+    syncDocsToPublic({ preserveDirs: ["static"], ignorePatterns: [] }),
     starlight({
       title: SITE_NAME,
       tableOfContents: {
