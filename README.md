@@ -294,6 +294,15 @@ Starlight markdown files support the following frontmatter fields:
 
 The `astroLatexCompile` Astro integration automatically compiles fenced ` ```tex compile ` or ` ```latex compile ` code blocks into SVG files and replaces them with inline `<img>` tags at build time and during dev.
 
+**System Requirements:**
+
+- **pdflatex** — used to compile the `tex` source into a DVI/PDF intermediate
+- **dvisvgm** — converts the compiled output to SVG
+
+Both must be installed and available on your system `PATH`.
+
+> **Note:** SVG files must be compiled locally and committed to the repository. CI environments typically do not have `pdflatex` or `dvisvgm` installed, so any `tex compile` blocks for which SVGs are not committed will cause build failures in CI.
+
 **Setup in `astro.config.mjs`:**
 
 ```javascript
@@ -347,8 +356,6 @@ You can also pass CSS classes via the `class` meta attribute:
 ````
 
 The code block is replaced with an `<img>` tag pointing to the compiled SVG. The image always has the `tex-compiled` CSS class, plus any additional classes you specify.
-
-> **Note:** `latex compile` is accepted as an alias for `tex compile`.
 
 ## 🧞 Commands
 
