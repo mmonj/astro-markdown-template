@@ -357,6 +357,31 @@ You can also pass CSS classes via the `class` meta attribute:
 
 The code block is replaced with an `<img>` tag pointing to the compiled SVG. The image always has the `tex-compiled` CSS class, plus any additional classes you specify.
 
+## Sync Docs to Public (`syncDocsToPublic`)
+
+This project is configured by default with the `syncDocsToPublic` Astro integration (defined in `astro.config.mjs`) to mirror content from `src/content/docs/` into the `public/` directory at build time and during dev, replicating the same folder hierarchy. This allows static assets (images, PDFs, etc.) that live alongside your Markdown files in `src/content/docs/` to be served as public URLs.
+
+**Configuration in `astro.config.mjs`:**
+
+```javascript
+import { syncDocsToPublic } from "starlight-cannoli-plugins";
+
+export default defineConfig({
+  integrations: [syncDocsToPublic({ preserveDirs: ["static"], ignorePatterns: [] })],
+});
+```
+
+**Options:**
+
+- **`preserveDirs`** — List of subdirectory names inside `public/` that should never be touched by the sync.
+- **`ignorePatterns`** — Glob patterns for files inside `src/content/docs/` that should be excluded from syncing.
+
+**Important: where to manually place files in `public/`**
+
+This project template has configured `syncDocsToPublic` to preserve the `public/static/` directory, so you can safely place manually managed files there without worrying about them being overwritten or deleted during syncs. This is a good location for hand-managed assets like favicons, javascript, etc.
+
+Because `syncDocsToPublic` dynamically manages most of `public/` by mirroring `src/content/docs/`, **manually placed files in `public/` outside of preserved directories can be overwritten or deleted** during a sync, so it's best to avoid placing any hand-managed files in those areas.
+
 ## 🧞 Commands
 
 All commands are run from the root of the project, from a terminal:
