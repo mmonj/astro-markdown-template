@@ -11,6 +11,7 @@ import {
   astroLatexCompile,
   astroNormalizePaths,
   rehypeValidateLinks,
+  starlightDomPatches,
   starlightIndexOnlySidebar,
   syncDocsToPublic,
 } from "starlight-cannoli-plugins";
@@ -48,6 +49,11 @@ export default defineConfig({
       removeOrphanedSvgs: false,
     }),
     syncDocsToPublic({ preserveDirs: ["static"], ignorePatterns: [] }),
+    starlightDomPatches({
+      hideSingleLineGutters: true,
+      wrapDetailsContent: true,
+      syncTocLabelsFromHeadings: true,
+    }),
     starlight({
       title: SITE_NAME,
       tableOfContents: {
