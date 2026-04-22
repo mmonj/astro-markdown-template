@@ -39,7 +39,7 @@ export default defineConfig({
       rehypeKatex, // co-dependent with remark-math
       [addClasses, { ".katex": "not-content", "mjx-container>svg": "not-content" }],
       rehypeGraphviz, // Graphviz diagram support
-      rehypeValidateLinks, // validate links
+      rehypeValidateLinks, // check for broken local links
     ],
   },
   integrations: [
