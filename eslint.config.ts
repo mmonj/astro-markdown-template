@@ -35,10 +35,15 @@ export default defineConfig([
     rules: {
       "markdown/no-missing-label-refs": "off",
       "markdown/no-duplicate-headings": "off",
-      "cannoliMarkdown/require-frontmatter": "error",
       "cannoliMarkdown/no-h1-headers": "error",
       "cannoliMarkdown/enforce-link-convention": "error",
       "cannoliMarkdown/no-escape-latex-delimiters": "warn",
+      "cannoliMarkdown/enforce-frontmatter-schema": [
+        "error",
+        {
+          title: "*",
+        },
+      ],
       // "cannoliMarkdown/require-blank-line-after-html": "error",
       // "cannoliMarkdown/require-display-math-formatting": "error",
       // "cannoliMarkdown/inline-math-alone-on-line": "error",
