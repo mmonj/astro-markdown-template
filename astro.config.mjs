@@ -47,11 +47,12 @@ export default defineConfig({
     astroLatexCompile({
       svgOutputDir: "public/static/tex-svgs",
       removeOrphanedSvgs: false,
+      // texInputDirs: []
     }),
     syncDocsToPublic({ preserveDirs: ["static"], ignorePatterns: [] }),
     starlightDomPatches({
       hideSingleLineGutters: true,
-      wrapDetailsContent: true,
+      limitDetailsElementHeight: true,
       syncTocLabelsFromHeadings: true,
     }),
     starlight({
