@@ -1,5 +1,15 @@
+# ==== base rules ====
+# ignore child dirs under public/; child files are still committed
+public/*/
+# allow this public/static/ to be committed
+!public/static/
+# ==== end base rules ====
+
+# === project-specific ignores ===
 # build output
 dist/
+# === end project-specific ignores ===
+
 # generated types
 .astro/
 
@@ -12,15 +22,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-
 # environment variables
 .env
 .env.production
 
 # macOS-specific files
 .DS_Store
-
-# project-specific files
-eslint-configs/tests/
-public/*
-!public/static/
