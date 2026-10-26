@@ -491,6 +491,89 @@ $$
 
 ---
 
+## LaTeX Diagrams
+
+Fenced `tex compile` (or `latex compile`) blocks are compiled with `pdflatex` and `dvisvgm` at build time and inlined into the page as SVGs. Each block must be a complete, standalone LaTeX document:
+
+````markdown
+```tex compile
+\documentclass[border=5pt]{standalone}
+\usepackage{tikz}
+\begin{document}
+\begin{tikzpicture}
+  \node (A) at (0,0) {A};
+  \node (B) at (2,0) {B};
+  \draw[->] (A) -- (B);
+\end{tikzpicture}
+\end{document}
+```
+````
+
+### TikZ Graph
+
+A small weighted graph drawn with TikZ:
+
+```tex compile alt="A weighted graph with four nodes"
+\documentclass[border=5pt]{standalone}
+\usepackage{tikz}
+\begin{document}
+\begin{tikzpicture}[every node/.style={circle, draw, minimum size=8mm}, >=stealth]
+  \node (s) at (0,0) {$s$};
+  \node (a) at (2,1) {$a$};
+  \node (b) at (2,-1) {$b$};
+  \node (t) at (4,0) {$t$};
+  \draw[->] (s) -- node[draw=none, above left] {3} (a);
+  \draw[->] (s) -- node[draw=none, below left] {2} (b);
+  \draw[->] (a) -- node[draw=none, right] {1} (b);
+  \draw[->] (a) -- node[draw=none, above right] {4} (t);
+  \draw[->] (b) -- node[draw=none, below right] {5} (t);
+\end{tikzpicture}
+\end{document}
+```
+
+### Commutative Diagram
+
+Diagrams from packages like `tikz-cd` work too:
+
+```tex compile alt="A commutative square"
+\documentclass[border=5pt]{standalone}
+\usepackage{tikz-cd}
+\begin{document}
+\Large
+\begin{tikzcd}
+  A \arrow[r, "f"] \arrow[d, "g"'] & B \arrow[d, "h"] \\
+  C \arrow[r, "k"'] & D
+\end{tikzcd}
+\end{document}
+```
+
+### Plot
+
+A function plot using `pgfplots`:
+
+```tex compile alt="Plot of x squared and x cubed"
+\documentclass[border=5pt]{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\begin{document}
+\begin{tikzpicture}
+  \begin{axis}[
+    width=8cm, height=5cm,
+    xlabel={$x$}, ylabel={$y$},
+    axis lines=middle, legend pos=north west,
+    domain=-1.5:1.5, samples=50,
+  ]
+    \addplot[thick, blue] {x^2};
+    \addlegendentry{$x^2$}
+    \addplot[thick, red, dashed] {x^3};
+    \addlegendentry{$x^3$}
+  \end{axis}
+\end{tikzpicture}
+\end{document}
+```
+
+---
+
 ## Graphviz Diagrams
 
 Graphviz diagrams are rendered server-side using the DOT language. This supports flowcharts, trees, state machines, networks, and more.
