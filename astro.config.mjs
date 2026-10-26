@@ -13,7 +13,6 @@ import {
   rehypeValidateLinks,
   starlightDomPatches,
   starlightIndexOnlySidebar,
-  syncDocsToPublic,
 } from "starlight-cannoli-plugins";
 
 // Common Config Items
@@ -49,7 +48,7 @@ export default defineConfig({
       removeOrphanedSvgs: false,
       // texInputDirs: []
     }),
-    syncDocsToPublic({ preserveDirs: ["static"], ignorePatterns: [] }),
+    // syncDocsToPublic({ preserveDirs: ["static"], ignorePatterns: [] }),
     starlightDomPatches({
       hideSingleLineGutters: true,
       limitDetailsElementHeight: true,
