@@ -10,8 +10,7 @@ import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import {
   astroLatexCompile,
-  astroNormalizePaths,
-  rehypeValidateLinks,
+  astroLocalLinks,
   starlightDomPatches,
   starlightIndexOnlySidebar,
 } from "starlight-cannoli-plugins";
@@ -19,7 +18,7 @@ import {
 // Common Config Items
 const SITE_NAME = "My Grand Amazing Site";
 const STARLIGHT_SIDEBAR_CONFIG = starlightIndexOnlySidebar({
-  maxDepthNesting: 0,
+  maxGroupLevels: 1,
   dirnameDeterminesLabels: true,
   directories: [
     "reference",
@@ -40,18 +39,17 @@ export default defineConfig({
         rehypeKatex, // co-dependent with remark-math
         [addClasses, { ".katex": "not-content", "mjx-container>svg": "not-content" }],
         rehypeGraphviz, // Graphviz diagram support
-        rehypeValidateLinks, // check for broken local links
       ],
     }),
   },
   integrations: [
-    astroNormalizePaths(), // normalize relative paths to absolute paths; useful for web hosts that add a trailing slash
+    astroLocalLinks(), // check for broken local links and normalize relative links to absolute paths
     astroLatexCompile({
       svgOutputDir: "public/static/tex-svgs",
       removeOrphanedSvgs: false,
       // texInputDirs: []
     }),
-    // syncDocsToPublic({ preserveDirs: ["static"], ignorePatterns: [] }),
+    // astroServeDocsFiles({ ignorePatterns: [] }),
     starlightDomPatches({
       hideSingleLineGutters: true,
       limitDetailsElementHeight: true,
@@ -65,7 +63,8 @@ export default defineConfig({
       },
       plugins: [STARLIGHT_SIDEBAR_CONFIG],
       customCss: [
-        "starlight-cannoli-plugins/styles/main.scss",
+        "starlight-cannoli-plugins/styles/utilities.css",
+        "starlight-cannoli-plugins/styles/starlight-theme.css",
         "/src/styles/custom.scss",
         "katex/dist/katex.min.css",
       ],
