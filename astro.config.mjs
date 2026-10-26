@@ -11,6 +11,7 @@ import remarkMath from "remark-math";
 import {
   astroLatexCompile,
   astroLocalLinks,
+  astroServeDocsFiles,
   starlightDomPatches,
   starlightIndexOnlySidebar,
 } from "starlight-cannoli-plugins";
@@ -49,7 +50,7 @@ export default defineConfig({
       removeOrphanedSvgs: false,
       // texInputDirs: []
     }),
-    // astroServeDocsFiles({ ignorePatterns: [] }),
+    astroServeDocsFiles({ ignorePatterns: [] }),
     starlightDomPatches({
       hideSingleLineGutters: true,
       limitDetailsElementHeight: true,
