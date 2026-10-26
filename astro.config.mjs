@@ -1,4 +1,5 @@
 // @ts-check
+import { unified } from "@astrojs/markdown-remark";
 import starlight from "@astrojs/starlight";
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 
@@ -31,15 +32,17 @@ const STARLIGHT_SIDEBAR_CONFIG = starlightIndexOnlySidebar({
 // https://astro.build/config
 export default defineConfig({
   markdown: {
-    remarkPlugins: [
-      remarkMath, // adds support for math
-    ],
-    rehypePlugins: [
-      rehypeKatex, // co-dependent with remark-math
-      [addClasses, { ".katex": "not-content", "mjx-container>svg": "not-content" }],
-      rehypeGraphviz, // Graphviz diagram support
-      rehypeValidateLinks, // check for broken local links
-    ],
+    processor: unified({
+      remarkPlugins: [
+        remarkMath, // adds support for math
+      ],
+      rehypePlugins: [
+        rehypeKatex, // co-dependent with remark-math
+        [addClasses, { ".katex": "not-content", "mjx-container>svg": "not-content" }],
+        rehypeGraphviz, // Graphviz diagram support
+        rehypeValidateLinks, // check for broken local links
+      ],
+    }),
   },
   integrations: [
     astroNormalizePaths(), // normalize relative paths to absolute paths; useful for web hosts that add a trailing slash
