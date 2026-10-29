@@ -6,6 +6,8 @@ This project is using the [Astro](https://astro.build/) web framework and the [S
 
 Refer to Starlight's documentation for full details on authoring Markdown pages and details on Starlight's custom features: https://starlight.astro.build/guides/authoring-content/
 
+For details on configuring the `starlight-cannoli-plugins` integrations and plugins used in `astro.config.mjs`, refer to the package's README: https://www.npmjs.com/package/starlight-cannoli-plugins
+
 This project is a template to get you started with Astro + Starlight. It includes example content and pre-set configurations.
 
 **Project initialized via:**
