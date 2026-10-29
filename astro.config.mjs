@@ -48,6 +48,7 @@ export default defineConfig({
     astroLatexCompile({
       svgOutputDir: "public/static/tex-svgs",
       removeOrphanedSvgs: false,
+      zoom: true,
       // texInputDirs: []
     }),
     astroServeDocsFiles({ ignorePatterns: [] }),
